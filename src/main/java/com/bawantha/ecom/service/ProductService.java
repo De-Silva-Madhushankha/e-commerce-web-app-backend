@@ -35,4 +35,26 @@ public class ProductService {
         }
         return productRepo.save(product);
     }
+
+    public Product updateProduct(int id, Product product, MultipartFile image) {
+        product.setImageType(image.getContentType());
+        product.setImageName(image.getOriginalFilename());
+        try {
+            product.setImageData(image.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productRepo.save(product);
+    }
+
+    public boolean deleteProduct(int id) {
+
+        Product product = productRepo.findById(id).orElse(null);
+        if (product != null) {
+            productRepo.delete(product);
+            return true;
+        }
+        return false;
+
+    }
 }
