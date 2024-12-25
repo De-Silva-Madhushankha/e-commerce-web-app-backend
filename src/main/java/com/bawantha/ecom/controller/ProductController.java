@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,5 +32,22 @@ public class ProductController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    // RequestPart annotation is used to bind the multipart request to a method parameter
+    @PostMapping("/product")
+    public ResponseEntity<?> addProduct(@RequestPart Product product,
+                                        @RequestPart MultipartFile image) {
+
+        System.out.println(product);
+        try {
+            Product newProduct = productService.addProduct(product, image);
+            return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
     }
 }
