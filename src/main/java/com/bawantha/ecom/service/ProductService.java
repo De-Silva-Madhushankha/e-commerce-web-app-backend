@@ -57,4 +57,9 @@ public class ProductService {
         return false;
 
     }
+
+    public List<Product> searchProduct(String keyword) {
+
+        return productRepo.searchProducts(keyword);
+    }
 }
