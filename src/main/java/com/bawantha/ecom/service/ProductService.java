@@ -17,4 +17,9 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productRepo.findAll();
     }
+
+    //orElse() or get() method is used to avoid null pointer exception
+    public Product getProductById(int id) {
+        return productRepo.findById(id).orElse(null);
+    }
 }

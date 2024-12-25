@@ -1,5 +1,6 @@
 package com.bawantha.ecom.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class Product {
     @JsonProperty("category")
     private String category;
     @JsonProperty("release_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date releaseDate;
     @JsonProperty("quantity")
     private int quantity;
