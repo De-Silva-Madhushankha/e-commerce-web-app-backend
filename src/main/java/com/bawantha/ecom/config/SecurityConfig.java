@@ -9,6 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.http.UserDetailsServiceFactoryBean;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -52,5 +57,27 @@ public class SecurityConfig {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(){
+
+        //example users
+
+        UserDetails user1 = User
+                .withDefaultPasswordEncoder()
+                .username("bawantha")
+                .password("baw2002")
+                .roles("USER")
+                .build();
+        UserDetails user2 = User
+                .withDefaultPasswordEncoder()
+                .username("madhushankha")
+                .password("madhu2002")
+                .roles("ADMIN")
+                .build();
+
+
+        return new InMemoryUserDetailsManager(user1, user2);
     }
 }
