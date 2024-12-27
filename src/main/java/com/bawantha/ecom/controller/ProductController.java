@@ -19,6 +19,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @RequestMapping("/")
+    public String greet(){
+        return "Hello Customers";
+    }
+
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
