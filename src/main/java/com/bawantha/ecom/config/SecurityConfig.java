@@ -38,10 +38,17 @@ public class SecurityConfig {
 //            http.csrf(custCsrf);
 
 
+            //Builder Pattern
+            return http
+                    .csrf(customizer -> customizer.disable())
+                    .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+                    .httpBasic(Customizer.withDefaults())
+                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .build();
 
 
+            //http.formLogin(Customizer.withDefaults()); //Only works for browser forms
 
-            return http.build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
