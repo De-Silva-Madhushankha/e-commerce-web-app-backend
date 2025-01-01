@@ -2,7 +2,7 @@ package com.bawantha.ecom.controller;
 
 
 import com.bawantha.ecom.model.User;
-import com.bawantha.ecom.service.EcomUserDetailsService;
+import com.bawantha.ecom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -18,7 +18,7 @@ import java.util.List;
 public class userController {
 
     @Autowired
-    EcomUserDetailsService service;
+    private UserService service;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers(){
@@ -34,17 +34,20 @@ public class userController {
     @PostMapping("/user")
     public ResponseEntity<User> createUser(@RequestBody User user){
 
-        User newUser =  service.createUser(user);
+        User newUser =  service.register(user);
         System.out.println(newUser);
 
         if( newUser != null)
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         return new ResponseEntity<>(newUser, HttpStatus.NOT_FOUND);
-
-
     }
 
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+        //System.out.println(user);
+        return service.verify(user);
 
+    }
 
 
 

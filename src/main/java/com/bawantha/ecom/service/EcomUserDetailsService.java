@@ -4,6 +4,9 @@ import com.bawantha.ecom.model.User;
 import com.bawantha.ecom.model.UserPrincipal;
 import com.bawantha.ecom.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,29 +19,17 @@ import java.util.List;
 public class EcomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepo repo;
+    private UserRepo userRepo;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        User user = repo.findByUsername(username);
-
-        if(user == null){
-            System.out.println("User Not Found!!");
-            throw new UsernameNotFoundException("User Not Found!");
+        User user = userRepo.findByUsername(username);
+        if (user == null) {
+            System.out.println("User Not Found");
+            throw new UsernameNotFoundException("user not found");
         }
 
         return new UserPrincipal(user);
-    }
-
-    public List<User> getUsers(){
-
-        return repo.findAll();
-    }
-
-    public User createUser(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        return repo.save(user);
     }
 }
