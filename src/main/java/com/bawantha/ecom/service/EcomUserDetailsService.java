@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EcomUserDetailsService implements UserDetailsService {
 
@@ -25,5 +27,10 @@ public class EcomUserDetailsService implements UserDetailsService {
         }
 
         return new UserPrincipal(user);
+    }
+
+    public List<User> getUsers(){
+
+        return repo.findAll();
     }
 }

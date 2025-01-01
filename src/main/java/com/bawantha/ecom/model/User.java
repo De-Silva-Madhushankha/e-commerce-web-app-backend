@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -14,8 +15,15 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
+    private int id;
+    @Getter
     private String username;
+    @Getter
     private String password;
+
+    public int getId() {
+        return id;
+    }
 
     public String getUsername() {
         return username;
