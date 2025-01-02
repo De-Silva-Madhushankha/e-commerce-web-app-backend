@@ -1,6 +1,6 @@
 package com.bawantha.ecom.config;
 
-
+import com.bawantha.ecom.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +30,9 @@ public class SecurityConfig {
 
     @Autowired
     UserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
@@ -62,6 +66,7 @@ public class SecurityConfig {
                             .anyRequest().authenticated())
                     .httpBasic(Customizer.withDefaults())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                     .build();
 
 
@@ -72,27 +77,27 @@ public class SecurityConfig {
         }
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-
-        //example users
-
-//        UserDetails user1 = User
-//                .withDefaultPasswordEncoder()
-//                .username("bawantha")
-//                .password("baw2002")
-//                .roles("USER")
-//                .build();
-//        UserDetails user2 = User
-//                .withDefaultPasswordEncoder()
-//                .username("madhushankha")
-//                .password("madhu2002")
-//                .roles("ADMIN")
-//                .build();
-
-
-        return new InMemoryUserDetailsManager();
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//
+//        //example users
+//
+////        UserDetails user1 = User
+////                .withDefaultPasswordEncoder()
+////                .username("bawantha")
+////                .password("baw2002")
+////                .roles("USER")
+////                .build();
+////        UserDetails user2 = User
+////                .withDefaultPasswordEncoder()
+////                .username("madhushankha")
+////                .password("madhu2002")
+////                .roles("ADMIN")
+////                .build();
+//
+//
+//        return new InMemoryUserDetailsManager();
+//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider( ){
@@ -108,9 +113,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-         AuthenticationManager authenticationManager = config.getAuthenticationManager();
-         return authenticationManager;
-
+         return config.getAuthenticationManager();
     }
 
 
